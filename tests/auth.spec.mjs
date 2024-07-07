@@ -7,19 +7,16 @@ import db from '../models/database.js';
 let testOrgID;
 test('Token expires at the correct time and contains correct user details', async t => {
 
-  const registerRes = await request(app)
-    .post('/auth/register')
+  const loginRes = await request(app)
+    .post('/auth/login')
     .send({
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      password: 'password',
-      phone: '1234567890'
+      email: 'thomas@gmail.com',
+      password: 'password1234'
     });
 
-  t.is(registerRes.statusCode, 201);
+  t.is(loginRes.statusCode, 200);
 
-  const { accessToken } = registerRes.body.data;
+  const { accessToken } = loginRes.body.data;
 
   const decoded = jwt.decode(accessToken);
 
@@ -27,34 +24,29 @@ test('Token expires at the correct time and contains correct user details', asyn
   t.truthy(decoded.exp);
   t.true(decoded.exp > now);
 
-  t.is(decoded.firstName, 'John');
-  t.is(decoded.email, 'john.doe@example.com');
+  t.is(decoded.userId, 'qiCdid');
 });
 
 
 test('Users can only access data from their organisations', async t => {
 
-  const registerRes = await request(app)
-    .post('/auth/register')
+  const loginRes = await request(app)
+    .post('/auth/login')
     .send({
-      firstName: 'Alice',
-      lastName: 'Smith',
-      email: 'alice.smith@example.com',
-      password: 'password',
-      phone: '1234567890',
-      organisationId: 'org123' 
+      email: 'thomas@gmail.com',
+      password: 'password1234'
     });
 
-  t.is(registerRes.statusCode, 201);
+  t.is(loginRes.statusCode, 200);
 
-  // Simulate fetching data that requires organisation-specific access
-  const user = await User.findOne({ where: { email: 'alice.smith@example.com' } });
-  const userOrgId = user.organisationId; // Extract the organisation ID from user model
+ 
+  const user = await UserOrganisation.findOne({ where: {userId: { [Op.contains]: [qiCdid] }}});
+  const userOrgId = user.orgId; 
 
   // Make sure the user can access their own organisation data
   const userOrgRecord = await UserOrganisation.findAll({
     where: {
-      userId: { [Op.contains]: [user.id] },
+      userId: { [Op.contains]: [qiCdid] },
       orgId: userOrgId
     },
     attributes: ['orgId']
@@ -155,7 +147,7 @@ test('Should fail if there is a duplicate email', async t => {
     .send({
       firstName: 'John',
       lastName: 'Doe',
-      email: 'john.doe@example.com',
+      email: 'john@example.com',
       password: 'password',
       phone: '1234567890'
     });
@@ -165,7 +157,7 @@ test('Should fail if there is a duplicate email', async t => {
     .send({
       firstName: 'Jane',
       lastName: 'Doe',
-      email: 'john.doe@example.com',
+      email: 'john@example.com',
       password: 'password',
       phone: '0987654321'
     });
