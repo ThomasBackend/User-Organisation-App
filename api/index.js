@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 //code here
 app.use('/api',apiRouter)
 app.use('/auth',authRouter)
-app.use('*', (req,res) => {
+app.get('*', (req,res) => {
   return res.status(200).send('This route is not in use.')
 })
 
