@@ -14,6 +14,10 @@ router.get('/organisations',auth,apiController.getAllOrganisations);
 
 router.post('/organisations',auth,apiController.createNewOrganisation);
 
+app.use('*', (req,res) => {
+    return res.status(200).send('This route is not in use.')
+  })
+
 
 
 export default router;

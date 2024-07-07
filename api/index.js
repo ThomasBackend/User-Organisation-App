@@ -14,6 +14,9 @@ app.use(bodyParser.json());
 //code here
 app.use('/api',apiRouter)
 app.use('/auth',authRouter)
+app.use('*', (req,res) => {
+  return res.status(200).send('This route is not in use.')
+})
 
 // Synchronize models
 const port = 8000;
