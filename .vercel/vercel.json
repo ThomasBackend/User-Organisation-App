@@ -1,0 +1,11 @@
+{
+    "build": {
+      "commands": [
+        "npm install" 
+      ],
+      "prebuild": [ 
+        "npm install pg pg-hstore"
+      ]
+    }
+  }
+  

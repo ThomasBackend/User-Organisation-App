@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { Sequelize, DataTypes } from 'sequelize';
 import { fileURLToPath, pathToFileURL } from 'url';
+import pg from 'pg';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ const modelsDir = path.join(__dirname, '.'); // Assuming models are in the same 
 const sequelize = new Sequelize(process.env.POSTGRES_DATABASE, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
   host: process.env.DB_HOST,
   dialect: 'postgres',
+  dialectModule: pg,
   dialectOptions: {
     ssl: {
       require: true, // Enable SSL connection
