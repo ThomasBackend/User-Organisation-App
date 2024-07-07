@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from'body-parser';
-import db from './models/database.js';
-import apiRouter from './routes/api.js'
-import authRouter from './routes/auth.js'
+import db from '../models/database.js';
+import apiRouter from '../routes/api.js'
+import authRouter from '../routes/auth.js'
 
 const app = express();
 
