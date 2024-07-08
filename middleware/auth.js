@@ -5,7 +5,7 @@ dotenv.config();
 
 export default function authenticateToken(req, res, next) {
     try{
-    const authHeader = req.headers['authorization'];
+    const authHeader = req.headers['authorization'] || req.headers['Authorization'];
 
   if (!authHeader) {
     return res.status(401).json({ error: 'Authorization header is missing' });
