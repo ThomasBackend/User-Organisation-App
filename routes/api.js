@@ -15,7 +15,7 @@ router.get('/organisations',auth,apiController.getAllOrganisations);
 router.post('/organisations',auth,apiController.createNewOrganisation);
 
 router.get('*', (req,res) => {
-    return res.status(200).send('This route is not in use.')
+    return res.status(404).send('This route is not in use.')
   })
 
 
