@@ -157,7 +157,7 @@ const addUserToAnOrganisation = async (req,res) => {
         const existingUserOrg = await UserOrganisation.findOne({where : {orgId: orgId,userId : {[Op.contains]: [userId]} }})
         
         if(existingUserOrg){
-            return res.status(200).json({status : 'success', message : 'User Added To Organisation SUccessfully'}
+            return res.status(200).json({status : 'success', message : 'User Added To Organisation SUccessfully'})
         }
 
         const query = `
